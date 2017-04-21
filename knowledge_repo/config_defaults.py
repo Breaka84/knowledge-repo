@@ -21,7 +21,7 @@ aliases = {}
 # Postprocessors to apply when importing KnowledgePost objects into the repository.
 # Note that KnowledgePost objects by default run 'extract_images' and 'format_checks'.
 # Order is important.
-postprocessors = []
+postprocessors = ['extract_images_to_s3', 'format_checks']
 
 
 # Usernames of users to keep informed of changes to the knowledge data repo
