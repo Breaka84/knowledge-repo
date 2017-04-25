@@ -1,0 +1,605 @@
+---
+title: Test
+created_at: 2017-04-24
+tags:
+- topic1
+- topic2
+- topic3
+- topic4
+- topic5
+authors: 
+- Jane Doe
+tldr: Integer vel placerat purus. Nulla facilisi. Etiam odio magna, porttitor et est nec, placerat pellentesque ex. Suspendisse aliquet facilisis elit, in placerat quam scelerisque sagittis.
+updated_at: 2017-04-24
+---
+
+**Contents**
+
+[TOC]
+
+### Overview
+
+Integer vel placerat purus. Nulla facilisi. Etiam odio magna, porttitor et est nec, placerat pellentesque ex. Suspendisse aliquet facilisis elit, in placerat quam scelerisque sagittis. Pellentesque porttitor porta massa. In nec elit placerat, aliquet est a, mollis erat. Morbi congue ac nisi nec interdum. Nullam vehicula rutrum ex, quis ultrices nunc feugiat vitae. In accumsan nunc sapien, at consequat velit semper eget. Suspendisse mi tellus, elementum ut faucibus eu, sollicitudin vitae sapien.
+
+
+```{r include = FALSE}
+library(plyr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggsci)
+library(plotly)
+
+ds1 <- read.table("Data/dataset1.csv")
+ds2 <- read.table("Data/dataset2.csv")
+ds3 <- read.table("Data/dataset3.csv")
+ds4 <- read.table("Data/dataset4.csv")
+ds5 <- read.table("Data/dataset5.csv")
+
+```
+
+### Part 1
+
+Integer vel placerat purus. Nulla facilisi. Etiam odio magna, porttitor et est nec, placerat pellentesque ex. Suspendisse aliquet facilisis elit, in placerat quam scelerisque sagittis. Pellentesque porttitor porta massa. In nec elit placerat, aliquet est a, mollis erat. Morbi congue ac nisi nec interdum. Nullam vehicula rutrum ex, quis ultrices nunc feugiat vitae. In accumsan nunc sapien, at consequat velit semper eget. Suspendisse mi tellus, elementum ut faucibus eu, sollicitudin vitae sapien.
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds1 %>%
+  group_by(V4, V11, V12) %>%
+  summarise(cnt = sum(V10)) %>%
+  mutate(perc = cnt / sum(cnt) * 100)
+
+yw <- sort(unique(x$V11))
+
+avgs <- x %>%
+  filter(V12 == "e") %>%
+  group_by(V4) %>%
+  summarise(avg = mean(100-perc)) %>%
+  spread(V4, avg)
+
+x <- x %>%
+  mutate(avg = ifelse(V4 == "A", avgs$A, avgs$B))
+
+ggplot(x, aes(x = V11, y = perc, fill = V12)) +
+  facet_wrap(~V4, ncol = 1) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)])
+
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+ggplot(x, aes(x = V11, y = cnt, fill = V12)) +
+  facet_wrap(~V4, ncol = 1) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)])
+```
+
+#### Sub 1
+
+In nec elit placerat, aliquet est a, mollis erat. Morbi congue ac nisi nec interdum. Nullam vehicula rutrum ex, quis ultrices nunc feugiat vitae. In accumsan nunc sapien, at consequat velit semper eget. Suspendisse mi tellus, elementum ut faucibus eu, sollicitudin vitae sapien.
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds1 %>%
+  group_by(V4, V6, V11, V12) %>%
+  summarise(cnt = sum(V10)) %>%
+  mutate(perc = cnt / sum(cnt) * 100)
+
+ggplot(x, aes(x = V11, y = perc, fill = V12)) +
+  facet_wrap(~V4 + V6, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)])
+
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+ggplot(x, aes(x = V11, y = cnt, fill = V12)) +
+  facet_wrap(~V4 + V6, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)])
+```
+
+#### Sub 2
+
+In nec elit placerat, aliquet est a, mollis erat. Morbi congue ac nisi nec interdum. Nullam vehicula rutrum ex, quis ultrices nunc feugiat vitae. In accumsan nunc sapien, at consequat velit semper eget. Suspendisse mi tellus, elementum ut faucibus eu, sollicitudin vitae sapien.
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=8}
+x <- ds1 %>%
+  group_by(V5, V4, V11, V12) %>%
+  summarise(cnt = sum(V10)) %>%
+  mutate(perc = cnt / sum(cnt) * 100)
+
+ggplot(x, aes(x = V11, y = perc, fill = V12)) +
+  facet_wrap(~V5 + V4, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)])
+
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=8}
+ggplot(x, aes(x = V11, y = cnt, fill = V12)) +
+  facet_wrap(~V5 + V4, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)])
+```
+
+### Part 2
+
+Integer vel placerat purus. Nulla facilisi. Etiam odio magna, porttitor et est nec, placerat pellentesque ex. Suspendisse aliquet facilisis elit, in placerat quam scelerisque sagittis. Pellentesque porttitor porta massa. In nec elit placerat, aliquet est a, mollis erat. Morbi congue ac nisi nec interdum. Nullam vehicula rutrum ex, quis ultrices nunc feugiat vitae. In accumsan nunc sapien, at consequat velit semper eget. Suspendisse mi tellus, elementum ut faucibus eu, sollicitudin vitae sapien.
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds1 %>%
+  filter(!is.na(V8)) %>%
+  group_by(V4, V11, V13) %>%
+  summarise(cnt = sum(V10)) %>%
+  mutate(perc = cnt / sum(cnt) * 100)
+
+avgs <- x %>%
+  filter(V13 == "x") %>%
+  group_by(V4) %>%
+  summarise(avg = mean(perc)) %>%
+  spread(V4, avg)
+
+x <- x %>%
+  mutate(avg = ifelse(V11 == "16/01", ifelse(V4 == "iOS", avgs$A, avgs$B), NA))
+
+ggplot(x, aes(x = V11, y = perc, fill = V13)) +
+  facet_wrap(~V4, ncol = 1) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10)) +
+  geom_hline(aes(yintercept = avg), color = "gray") +
+  geom_text(aes(0, avg, label = round(avg, 2), hjust = -1, vjust = -1), size = 4)
+
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+ggplot(x, aes(x = V11, y = cnt, fill = V13)) +
+  facet_wrap(~V4, ncol = 1) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+#### Sub 1
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds1 %>%
+  filter(!is.na(V8)) %>%
+  group_by(V4, V6, V11, V13) %>%
+  summarise(cnt = sum(V10)) %>%
+  mutate(perc = cnt / sum(cnt) * 100)
+
+avgs <- x %>%
+  filter(V13 == "x") %>%
+  group_by(V4, V6) %>%
+  summarise(avg = mean(perc)) %>%
+  spread(V4, avg)
+
+x <- x %>%
+  mutate(avg = ifelse(V11 == "16/01", 
+                      ifelse(V4 == "A",
+                             ifelse(V6 == "F", avgs$A[avgs$V6 == "F"], avgs$A[avgs$V6 == "M"]),
+                             ifelse(V6 == "F", avgs$B[avgs$V6 == "F"], avgs$B[avgs$V6 == "M"])), NA))
+
+ggplot(x, aes(x = V11, y = perc, fill = V13)) +
+  facet_wrap(~V4 + V6, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10)) +
+  geom_hline(aes(yintercept = avg), color = "gray") +
+  geom_text(aes(0, avg, label = round(avg, 2), hjust = -1, vjust = -1), size = 4)
+
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+ggplot(x, aes(x = V11, y = cnt, fill = V13)) +
+  facet_wrap(~V4 + V6, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+#### Sub 2
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds1 %>%
+  filter(!is.na(V8)) %>%
+  group_by(V4, V6, V11, V13) %>%
+  summarise(cnt = sum(V10)) %>%
+  mutate(perc = cnt / sum(cnt) * 100)
+
+avgs <- x %>%
+  filter(V13 == "x") %>%
+  group_by(V4, V6) %>%
+  summarise(avg = mean(perc)) %>%
+  spread(V4, avg)
+
+x <- x %>%
+  mutate(avg = ifelse(V11 == "16/01", 
+                      ifelse(V4 == "A",
+                             ifelse(V6 == "F", avgs$A[avgs$V6 == "F"], avgs$A[avgs$V6 == "M"]),
+                             ifelse(V6 == "F", avgs$B[avgs$V6 == "F"], avgs$B[avgs$V6 == "M"])), NA))
+
+ggplot(x, aes(x = V11, y = perc, fill = V13)) +
+  facet_wrap(~V4 + V6, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10)) +
+  geom_hline(aes(yintercept = avg), color = "gray") +
+  geom_text(aes(0, avg, label = round(avg, 2), hjust = -1, vjust = -1), size = 4)
+
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+ggplot(x, aes(x = V11, y = cnt, fill = V13)) +
+  facet_wrap(~V4 + V6, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+### Part 3
+
+Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam erat volutpat. Nulla facilisi. Ut quis metus in nisi dapibus convallis non vitae lacus. Aliquam posuere lobortis luctus. Proin a porta nunc, bibendum euismod mauris. Aliquam accumsan placerat nisi vel dignissim. Ut neque velit, elementum fermentum mi sit amet, condimentum condimentum tellus. Suspendisse id eleifend leo. Nullam luctus in augue nec tempor. Donec volutpat quis est nec tempus. Sed at mauris enim. Sed eu ultrices urna. Fusce nisl metus, facilisis fermentum interdum ac, dignissim nec velit. Phasellus quis tempus sem, sed suscipit orci. Cras ac blandit ipsum.
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds2 %>%
+  group_by(V3, V11, V7) %>%
+  summarise(cnt = sum(V10)) %>%
+  mutate(perc = cnt / sum(cnt) * 100)
+
+ggplot(x, aes(x = V11, y = perc, fill = V7)) +
+  facet_wrap(~V3, ncol = 1) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+ggplot(x, aes(x = V11, y = cnt, fill = V7)) +
+  facet_wrap(~V3, ncol = 1) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+#### Sub 1
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds2 %>%
+  group_by(V3, V5, V11, V7) %>%
+  summarise(cnt = sum(V10)) %>%
+  mutate(perc = cnt / sum(cnt) * 100)
+
+ggplot(x, aes(x = V11, y = perc, fill = V7)) +
+  facet_wrap(~V3 + V5, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+ggplot(x, aes(x = V11, y = cnt, fill = V7)) +
+  facet_wrap(~V3 + V5, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+#### Sub 2
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=8}
+x <- ds2 %>%
+  group_by(V3, V4, V11, V7) %>%
+  summarise(cnt = sum(V10)) %>%
+  mutate(perc = cnt / sum(cnt) * 100)
+
+ggplot(x, aes(x = V11, y = perc, fill = V7)) +
+  facet_wrap(~V4 + V3, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=8}
+ggplot(x, aes(x = V11, y = cnt, fill = V7)) +
+  facet_wrap(~V4 + V3, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = yw[seq(1,length(yw), by = 3)]) +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+### Part 4
+
+Nam viverra rhoncus venenatis. Ut sodales porttitor mauris eget gravida. Praesent ac fermentum urna, ut ullamcorper arcu. Fusce condimentum mi et mattis viverra. Nunc congue, sem quis porta faucibus, sapien erat mattis lectus, vitae rutrum ex orci eget est. Phasellus convallis magna in magna accumsan, eu egestas augue malesuada. Nullam eros urna, gravida ut elementum vitae, scelerisque a augue. Nunc tempor rhoncus neque. Aliquam a maximus massa, eu dignissim nulla. Fusce vitae justo tortor. Mauris aliquet sagittis eleifend. Nam sed eleifend enim, vel pretium elit. Cras tempus elementum sem, a vehicula orci sollicitudin sit amet.
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds3 %>%
+  filter(as.character(V13) >= "17/01") %>%
+  dplyr::select(V13, V5, V4, V6, V12, V8, V9, V10, V11) %>%
+  gather(Type, Value, 6:9) %>%
+  arrange(V13, V5, V4, V6) %>%
+  group_by(V13, V4, Type) %>%
+  summarise(cnt = sum(Value), cntTot = sum(V12)) %>%
+  mutate(perc = cnt/cntTot * 100)
+
+ggplot(x, aes(x = V13, y = cntTot)) +
+  facet_wrap(~V4, ncol = 1) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size=13), axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+
+```
+
+#### Sub 1
+
+Nullam eros urna, gravida ut elementum vitae, scelerisque a augue. Nunc tempor rhoncus neque. Aliquam a maximus massa, eu dignissim nulla. Fusce vitae justo tortor. Mauris aliquet sagittis eleifend. Nam sed eleifend enim, vel pretium elit. Cras tempus elementum sem, a vehicula orci sollicitudin sit amet.
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds4 %>%
+  filter(as.character(V10) >= "17/01") %>%
+  select(V10, V5, V4, V6, V9, V8, V7) %>%
+  gather(Type, Value, 6:7) %>%
+  arrange(V10, V5, V4, V6) %>%
+  group_by(V10, V4, Type) %>%
+  summarise(cnt = sum(Value), cntTot = sum(V9)) %>%
+  mutate(perc = cnt/cntTot * 100)
+
+ggplot(x, aes(x = V10, y = perc, fill = Type)) +
+  facet_wrap(~V4, ncol = 1) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, size = 7)) +
+  scale_fill_npg() +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+#### Sub 2
+
+Nullam eros urna, gravida ut elementum vitae, scelerisque a augue. Nunc tempor rhoncus neque. Aliquam a maximus massa, eu dignissim nulla. Fusce vitae justo tortor. Mauris aliquet sagittis eleifend. Nam sed eleifend enim, vel pretium elit. Cras tempus elementum sem, a vehicula orci sollicitudin sit amet.
+
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds3 %>%
+  filter(as.character(V13) >= "17/01") %>%
+  dplyr::select(V13, V5, V4, V6, V12, V8, V9, V10, V11) %>%
+  gather(Type, Value, 6:9) %>%
+  arrange(V13, V5, V4, V6) %>%
+  group_by(V13, V4, Type) %>%
+  summarise(cnt = sum(Value), cntTot = sum(V12)) %>%
+  mutate(perc = cnt/cntTot * 100)
+
+ggplot(x, aes(x = V13, y = perc, fill = Type)) +
+  facet_wrap(~V4, ncol = 1) +
+  scale_fill_npg(name = "") +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+
+#### Sub 3
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds3 %>%
+  filter(as.character(V13) >= "17/01") %>%
+  dplyr::select(V13, V5, V4, V6, V12, V8, V9, V10, V11) %>%
+  gather(Type, Value, 6:9) %>%
+  arrange(V13, V5, V4, V6) %>%
+  group_by(V13, V4, V6, Type) %>%
+  summarise(cnt = sum(Value), cntTot = sum(V12)) %>%
+  mutate(perc = cnt/cntTot * 100)
+
+ggplot(x, aes(x = V13, y = cntTot)) +
+  facet_wrap(~V4 + V6, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size=13), axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+ggplot(x, aes(x = V13, y = perc, fill = Type)) +
+  facet_wrap(~V4 + V6, ncol = 2) +
+  scale_fill_npg(name = "") +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+#### Sub 4
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds3 %>%
+  filter(as.character(V13) >= "17/01") %>%
+  dplyr::select(V13, V5, V4, V6, V12, V8, V9, V10, V11) %>%
+  gather(Type, Value, 6:9) %>%
+  arrange(V13, V5, V4, V6) %>%
+  group_by(V13, V4, V5, Type) %>%
+  summarise(cnt = sum(Value), cntTot = sum(V12)) %>%
+  mutate(perc = cnt/cntTot * 100)
+
+ggplot(x, aes(x = V13, y = cntTot)) +
+  facet_wrap(~V5 + V4, ncol = 2) +
+  scale_fill_npg() +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size=13), axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+ggplot(x, aes(x = V13, y = perc, fill = Type)) +
+  facet_wrap(~V5 + V4, ncol = 2) +
+  scale_fill_npg(name = "") +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+### Part 5
+
+Vivamus tristique metus id auctor hendrerit. Mauris facilisis, ligula id pharetra facilisis, massa purus posuere orci, ut viverra odio sapien in eros. Proin fermentum quam vitae turpis egestas pellentesque. Aliquam quis arcu pulvinar, hendrerit enim ac, congue ligula. Nam luctus, ipsum eget egestas lobortis, turpis tellus fermentum libero, tincidunt commodo neque enim ac mauris. Suspendisse a pretium massa. Donec at odio est. Etiam laoreet in tortor nec maximus. Quisque non urna auctor, hendrerit nibh finibus, vestibulum erat. Aliquam hendrerit mi a congue interdum.
+
+#### Sub 1
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds5 %>%
+  filter(as.character(V18) >= '16-09') %>%
+  filter(V2 == 1)
+
+ggplot(x, aes(x = V18, y = V7, fill = V18)) +
+  facet_wrap(~V5 + V6, ncol = 2) +
+  geom_bar(stat = "identity") +
+  scale_fill_npg() +
+  guides(fill = FALSE) +
+  theme(text = element_text(size=13), axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+Vivamus tristique metus id auctor hendrerit. Mauris facilisis, ligula id pharetra facilisis, massa purus posuere orci, ut viverra odio sapien in eros. Proin fermentum quam vitae turpis egestas pellentesque. Aliquam quis arcu pulvinar, hendrerit enim ac, congue ligula. Nam luctus, ipsum eget egestas lobortis, turpis tellus fermentum libero, tincidunt commodo neque enim ac mauris. Suspendisse a pretium massa. Donec at odio est. Etiam laoreet in tortor nec maximus. Quisque non urna auctor, hendrerit nibh finibus, vestibulum erat. Aliquam hendrerit mi a congue interdum.
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds5 %>%
+  filter(as.character(V18) >= '16-09') %>%
+  filter(V2 == 1) %>%
+  rename(`0` = V19,`1` = V20,`2` = V21,`3` = V22,`4` = V23,`5` = V24,`6` = V25,`7` = V26,`8` = V27,`9` = V28) %>%
+  select(V2, V18, V5, V6, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`) %>%
+  gather(D, C, 5:14) %>%
+  mutate(D = as.numeric(D))
+
+ggplot(x, aes(x = D, y = C, color = V18)) +
+  facet_wrap(~V5 + V6, ncol = 2) +
+  scale_x_continuous(breaks = seq(0, 9, by = 2)) +
+  scale_color_npg() +
+  geom_line() +
+  geom_point() +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+#### Sub 2
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds5 %>%
+  filter(as.character(V18) >= '16-09') %>%
+  filter(V2 == 2)
+
+ggplot(x, aes(x = V18, y = V7, fill = V18)) +
+  facet_wrap(~V5 + V6, ncol = 2) +
+  geom_bar(stat = "identity") +
+  scale_fill_npg() +
+  guides(fill = FALSE) +
+  theme(text = element_text(size=13), axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds5 %>%
+  filter(as.character(V18) >= '16-09') %>%
+  filter(V2 == 2) %>%
+  rename(`0` = V19,`1` = V20,`2` = V21,`3` = V22,`4` = V23,`5` = V24,`6` = V25,`7` = V26,`8` = V27,`9` = V28) %>%
+  select(V2, V18, V5, V6, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`) %>%
+  gather(D, C, 5:14) %>%
+  mutate(D = as.numeric(D))
+
+ggplot(x, aes(x = D, y = C, color = V18)) +
+  facet_wrap(~V5 + V6, ncol = 2) +
+  scale_x_continuous(breaks = seq(0, 9, by = 2)) +
+  scale_color_npg() +
+  geom_line() +
+  geom_point() +
+  theme(text = element_text(size=13),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+#### Sub 3
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds5 %>%
+  filter(as.character(V18) >= '16-09') %>%
+  group_by(V2, V5, V6) %>%
+  summarise(cntTot = sum(V7))
+
+ggplot(x, aes(x = as.factor(V2), y = cntTot, fill = as.factor(V2))) +
+  facet_wrap(~V5 + V6, ncol = 2) +
+  geom_bar(stat = "identity") +
+  scale_fill_simpsons() +
+  guides(fill = FALSE) +
+  theme(text = element_text(size=13), axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+x <- ds5 %>%
+  filter(as.character(V18) >= '16-09') %>%
+  group_by(V2, V5, V6) %>%
+  summarise(cntTot = sum(V7), cnt0 = sum(V8), cnt1 = sum(V9), 
+            cnt2 = sum(V10), cnt3 = sum(V11),
+            cnt4 = sum(V12), cnt5 = sum(V13), 
+            cnt6 = sum(V14), cnt7 = sum(V15), 
+            cnt8 = sum(V16), cnt9 = sum(V17)) %>%
+  ungroup() %>%
+  mutate(`0` = (cntTot-cnt0)/cntTot*100,
+         `1` = (cntTot-cnt1)/cntTot*100,
+         `2` = (cntTot-cnt2)/cntTot*100,
+         `3` = (cntTot-cnt3)/cntTot*100,
+         `4` = (cntTot-cnt4)/cntTot*100,
+         `5` = (cntTot-cnt5)/cntTot*100,
+         `6` = (cntTot-cnt6)/cntTot*100,
+         `7` = (cntTot-cnt7)/cntTot*100,
+         `8` = (cntTot-cnt8)/cntTot*100,
+         `9` = (cntTot-cnt9)/cntTot*100) %>%
+  select(V2, V5, V6, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`) %>%
+  gather(D, P, 4:13) %>%
+  mutate(D = as.integer(D))
+
+ggplot(x, aes(x = D, y = P, color = as.factor(V2))) +
+  facet_wrap(~V5 + V6, ncol = 2) +
+  scale_x_continuous(breaks = seq(0, 9, by = 2)) +
+  scale_color_simpsons() +
+  geom_line() +
+  geom_point() +
+  theme(text = element_text(size=13), axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
+
+
+```{r echo=FALSE, warning=FALSE, fig.width=12, fig.height=6}
+y <- x %>%
+  group_by(V2, V5, V6) %>%
+  summarise(avgP = mean(P))
+
+ggplot(y, aes(x = V2, y = avgP, color = as.factor(V6))) +
+  facet_wrap(~V5 + V6, ncol = 2) +
+  scale_x_continuous(breaks = seq(1, 12, by = 1)) +
+  scale_color_npg() +
+  geom_line() +
+  geom_point() +
+  theme(text = element_text(size=13), axis.text.x = element_text(angle = 45, vjust = 0.5, size = 10))
+```
