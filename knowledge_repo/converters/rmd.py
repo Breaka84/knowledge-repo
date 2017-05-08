@@ -18,8 +18,12 @@ class RmdConverter(KnowledgePostConverter):
             tmp_fd, tmp_path = tempfile.mkstemp()
             os.close(tmp_fd)
 
+            # runcmd = """R --vanilla --slave -e "library(knitr); setwd('{0}'); \
+            #             x = knit('{1}', '{2}', quiet=T)" """.format(os.path.abspath(os.path.dirname(filename)),
+            #                                                         os.path.abspath(filename),
+            #                                                         tmp_path)
             runcmd = """R --vanilla --slave -e "library(knitr); setwd('{0}'); \
-                        x = knit('{1}', '{2}', quiet=T)" """.format(os.path.abspath(os.path.dirname(filename)),
+                        rmarkdown::render('{1}', output_dir = '{2}', output_format = 'all')" """.format(os.path.abspath(os.path.dirname(filename)),
                                                                     os.path.abspath(filename),
                                                                     tmp_path)
 
