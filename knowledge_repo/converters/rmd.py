@@ -24,7 +24,7 @@ class RmdConverter(KnowledgePostConverter):
             #                                                         os.path.abspath(filename),
             #                                                         tmp_path)
             runcmd = """R --vanilla --slave -e "library(knitr); setwd('{0}'); \
-                        rmarkdown::render('{1}', output_file = '{2}', output_format = 'all')" """.format(os.path.abspath(os.path.dirname(filename)),
+                        rmarkdown::render('{1}', output_file = '{2}', output_format = 'md_document')" """.format(os.path.abspath(os.path.dirname(filename)),
                                                                     os.path.abspath(filename),
                                                                     tmp_path)
 
